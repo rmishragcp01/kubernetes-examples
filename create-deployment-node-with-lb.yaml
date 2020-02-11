@@ -25,4 +25,4 @@ spec:
         - name: nodejs-hello-lb
           image: gcr.io/google-samples/node-hello:1.0
           ports:
-            - containePort: 8080
+            - containerPort: 8080
