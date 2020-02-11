@@ -22,7 +22,7 @@ spec:
         env: development
     spec:
       containers:
-        - name: nodejs-hello
+        - name: nodejs-hello-lb
           image: gcr.io/google-samples/node-hello:1.0
           ports:
             - containePort: 8080
