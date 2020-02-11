@@ -19,5 +19,5 @@ spec:
           command:
             - cat
             - /tmp/healthy
-          initialDelaySecond: 5
-          periodSeconds: 5
+        initialDelaySeconds: 5
+        periodSeconds: 5
