@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-with-loadbalancer
+  lables:
+    type: front-end-ssr
+    tier: front-end
+    env: development
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      type: front-end-ssr
+      tier: front-end
+      env: development
+  template:
+    metadata:
+      name: nodejs-pod
+      labels:
+        type: front-end-ssr
+        tier: front-end
+        env: development
+    spec:
+      containers:
+        - name: nodejs-hello
+          image: gcr.io/google-samples/node-hello:1.0
+          ports:
+            - containePort: 8080
