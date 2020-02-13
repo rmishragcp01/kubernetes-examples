@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: simple-config-map-demo
+  labels:
+    name: simple-config-map-demo
+    type: front-end
+spec:
+  containers:
+    - name: front-end-config-map
+      image: nginx:latest
+      ports:
+        - containerPort: 8080
+      envFrom:
+        - configMapRef:
+            name: simple-config-map

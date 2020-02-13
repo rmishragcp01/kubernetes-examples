@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: simple-config-map
+data:
+  app_environment: development
+  app_category: finance
