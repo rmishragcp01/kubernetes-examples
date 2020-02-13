@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ngnix-pod-with-env
+  labels:
+    type: web
+    tier: experience
+spec:
+  containers:
+    - name: nginx-container
+      image: nginx:latest
+      containerPorts:
+      ports:
+        - containerPort: 8080
+      env:
+        - name: background
+          value: clear
+        - name: hostname
+          value: example.com
