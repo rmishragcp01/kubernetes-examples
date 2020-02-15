@@ -1,22 +1,18 @@
-#run this command to create the configmap first.
-#kubectl create -f https://kubernetes.io/examples/configmap/configmap-multikeys.yaml
+#run create-configmap-for-pod-volumes.yaml in the namespace first.
 apiVersion: v1
 kind: Pod
 metadata:
-  name: test-configmap-voluem-test-pod
-  labels:
-    name: test-configmap-voluem-test-pod
-    type: busybox
-    tier: sandbox
+  name: busybox-test-pod
 spec:
   containers:
-    - name: busybox-test
+    - name: busybox-test-container
       image: k8s.gcr.io/busybox
-      commands: [ "/bin/sh", "-c", "ls /etc/config/" ]
+      command: [ "/bin/sh", "-c", "ls /etc/config/" ]
       volumeMounts:
-        - name: configmap-volume
-          mountPath: /etc/config
-      volumes:
-        - name: confimap-volume
-          configMap: special-config
-      restartPolicy: Never
+      - name: config-volume
+        mountPath: /etc/config
+  volumes:
+    - name: config-volume
+      configMap:
+        name: special-config
+  restartPolicy: Never
