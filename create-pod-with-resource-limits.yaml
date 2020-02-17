@@ -1,0 +1,22 @@
+#This example creates a pod with memory and cpu limits set.
+#Remember that the resource limits are defined at the container level.
+#The defaults if not specified will be read from the LimitRange object in the namespace.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sample-web-app-pod
+  labels:
+    type: web
+    tier: front-end
+spec:
+  containers:
+    - name: nginx-pod
+      image: nginx:latest
+      imagePullPolicy: Always
+      resources:
+        limits:
+          memory: 20Mi
+          cpu: 1
+        requests:
+          memory: 5Mi
+          cpu: 0.5
