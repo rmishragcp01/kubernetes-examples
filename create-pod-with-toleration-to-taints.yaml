@@ -1,0 +1,26 @@
+#In this example, we will first have to taint a certain node.
+#Run command kubectl get nodes to determine the nodes in your cluster.
+#Now hypothetically taint the node with the following commmand.
+#kubectl taint nodes node1 key=value:NoSchedule
+#Above command means that there is a taint and that unless a Pod shows a toleration to the taint it can
+#not be scheduled on this node.
+#Now in this definition file, we will add a toleration to the pod, if toleration matches the taint then
+#it can be scheduled. Pods who do not match the taint will not be scheduled and already running pod will
+#be evicted fro the node.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-web-server
+  labels:
+    app: webserver
+    tier: front-end
+spec:
+  conatiners:
+    - name: nginx
+      image: nginx:latest
+      imagePullPolicy: Always
+  tolerations:
+    - key: "example-key"
+      operator: "Equal"
+      value: "example-value"
+      effect: "NoSchedule"
