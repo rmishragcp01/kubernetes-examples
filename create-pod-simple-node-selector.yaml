@@ -1,0 +1,18 @@
+#Sometimes it is required that certain type of workloads are scheduled only on
+#special types of nodes, for example a pod running an application which needs more compute resources
+#should only be scheduled on nodes which offer higher CPU cores, or an application with higher memory
+#requirements should be scheduled on nodes with more RAM available to them.
+#Run kubectl label node <node-name> <label-key>=<label-value> e.g. size=large
+#Now run kubectl -f create create-pod-simple-node-affinity.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: node-affinity-pod
+  labels:
+    type: webserver
+spec:
+  containers:
+    - name: nginx-with-affinity
+      imge: nginx:latest
+  nodeSelector:
+    size: large

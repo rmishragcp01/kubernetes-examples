@@ -7,6 +7,9 @@
 #Now in this definition file, we will add a toleration to the pod, if toleration matches the taint then
 #it can be scheduled. Pods who do not match the taint will not be scheduled and already running pod will
 #be evicted fro the node.
+#Get taints on node kubectl describe node <node-name>
+#If you want to un-taint the master and start scheduling pods on it
+#run kubectl taint nodes master node-role.kubernetes.io/master:NoSchedule-
 apiVersion: v1
 kind: Pod
 metadata:

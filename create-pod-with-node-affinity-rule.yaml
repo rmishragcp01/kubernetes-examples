@@ -1,0 +1,34 @@
+#This example assumes that you have labeled the nodes already with key=value pair such as size=Large or size=Medium.
+#Once the node is labeled execute this yaml and check the status of the pod, use the -o option to see the node it was finally executed
+#you shall see that Kubernetes sechduled the pod and executed it per the node affinity rules.
+#Node affinity types available in Kubernetes.
+#requiredDuringSchedulingIgnoredDuringExecution
+#preferredDuringSchedulingIgnoredDuringExecution
+#requiredDuringSchedulingRequiredDuringExecution
+#The names are very suggestive and in the case of below example, while its a must for Kubernetes to find a node with node affinity rule
+#before it can schedule the pod, however once the pod is executed and lable changes on the node, it has no effect and pod shall continue
+#to run on that node, in case preferredDuringSchedulingIgnoredDuringExecution, Kubernetes will give it's best effort to find a pod with
+#matching affinity rule but its subjective and preferred not mandatory like previous one, if no such node is found, pod will be scheduled on
+#any available node. The requiredDuringSchedulingRequiredDuringExecution rule will evict the pod from node if affinity rule changes after the
+#pod is executed.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: web-server-pod
+  labels:
+    type: front-end
+    env: dev-01
+spec:
+  containers:
+    - name: nginx-web
+      imgae: nginx:latest
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: size
+                operator: In
+                values:
+                  - Large
+                  - Medium
