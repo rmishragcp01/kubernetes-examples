@@ -1,0 +1,35 @@
+#This YAML is only a sample, please configure your pods accordingly, do not run this YAML as it would fail.
+#The purpose of this yaml is to only showcase how different types of probes can be used in kubernetes.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: readiness-prob-example
+
+spec:
+  containers:
+    - name: api-server
+      image: api-server:latest
+      ports:
+        - containerPort: 8080
+      readinessProbe:
+        httpGet:
+          path: /api/ready
+          port: 8080
+        intialDelaySeconds: 10
+        periodSeconds: 5
+        failureThreshold: 5
+    - name: db-server
+      image: db-server:latest
+      ports:
+        - containerPort: 3306
+      readinessProbe:
+        tcpSocket:
+          port: 3306
+    - name: busybox
+      image: busybox
+      readinessProbe:
+        exec:
+          command:
+            - ls
+            - /app/is_ready 
+       

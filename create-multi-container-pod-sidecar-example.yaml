@@ -1,0 +1,27 @@
+#Only for format demonstration purpose, do not run this pod, it may fail.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: multi-container-pod
+  labels:
+    type: multi-container
+    tier: front-end
+    env: sandbox
+spec:
+  containers:
+    - name: app
+      image: kodekloud/event-simulator
+      volumeMounts:
+        - mountPath: /log
+          name: log-volume
+    - name: sidecar
+      image: kodekloud/filebeat-configured
+      volumeMounts:
+        - mountPath: /var/log/evet-simulator
+          name: log-volume
+  volumes:
+    - name: log-volume
+      hostPath:
+        path: /var/log/webapp
+        type: DirectoryOrCreate
+  restartPolicy: Never

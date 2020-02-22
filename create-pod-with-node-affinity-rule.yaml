@@ -1,3 +1,4 @@
+#kubectl label node node01 color=blue e.g.
 #This example assumes that you have labeled the nodes already with key=value pair such as size=Large or size=Medium.
 #Once the node is labeled execute this yaml and check the status of the pod, use the -o option to see the node it was finally executed
 #you shall see that Kubernetes sechduled the pod and executed it per the node affinity rules.
