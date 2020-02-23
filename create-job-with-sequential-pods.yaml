@@ -1,0 +1,22 @@
+#Without completion:3, job will run only once, adjust per requirements.
+#Run kubectl get jobs to check the status of the job.
+kind: Job
+metadata:
+  name: simple-addition-job
+#job spec  
+spec:
+  completions: 3
+  #pod template
+  template:
+    metadata:
+      name: simple-add-pods
+      labels:
+        type: batch-executions
+        env: dev
+    #pod specs    
+    spec:
+      containers:
+        - name: ubuntu-simple-add-pod
+          image: ubuntu:latest
+          command: ['expr', '3', '+', '2']
+      restartPolicy: Never

@@ -1,0 +1,22 @@
+apiVersion: beta/v1beta1
+kind: CronJob
+metadata:
+  name: demo-cron-job
+#cron job specs  
+spec:
+  schedule: "*/1 * * * *"
+  #template for the underlying job
+  jobTemplate:
+    #spec for job
+    spec:
+      completion: 3
+      parallelism: 3
+      #template for pods
+      template:
+        #spec for pod
+        spec:
+          containers:
+            - name: ubuntu-cron-job
+              image: ubuntu:latest
+              command: ['expr', '3', '+', '2']
+          restartPolicy: Never

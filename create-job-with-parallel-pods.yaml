@@ -1,0 +1,29 @@
+#This definition file demosntarte how to create a Job in kubernetes.
+#Jobs are meant for one time execution, in this job we have also opted
+#for parallelism which if nor specified, the no. of completions will be done
+#sequentially. The example uses an image which fails randomly, so Kubernetes will
+#ensure it gets 3 successfull completions before terminating the pods for good.
+#Please also see the YAML which simply performs 3 sequential execution of specified Pods.
+#It is important to mention the restartPolicy as Never so that the pods are not restarted
+#after they have finished.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: simple-random-job
+#job specs  
+spec:
+  completions: 3
+  parallelism: 3
+  #pod template
+  template:
+    metadata:
+      name: simple-random-job-pods
+      labels:
+        type: batch-executions
+        env: dev
+    #pod spec    
+    spec:
+      containers:
+        - name: ubuntu-simple-random-container
+          image: kodekloud/random-error
+      restartPolicy: Never
