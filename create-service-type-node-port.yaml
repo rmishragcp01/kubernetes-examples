@@ -1,0 +1,16 @@
+#Demonstrate a Simple NodePort type kubernetes service.
+#Note that this assumes you have pods created with lables as specified
+#in the selector, only then you can load balance them behind node IP and the node port.
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-lb-node-port
+spec:
+  type: NodePort
+  ports:
+    - targetPort: 80
+      port: 80
+      nodePort: 30008
+  selector:
+    app: webserver
+    type: front-end
