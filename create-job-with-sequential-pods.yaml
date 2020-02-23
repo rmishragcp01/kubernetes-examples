@@ -1,5 +1,6 @@
 #Without completion:3, job will run only once, adjust per requirements.
 #Run kubectl get jobs to check the status of the job.
+apiVersion: batch/v1
 kind: Job
 metadata:
   name: simple-addition-job
