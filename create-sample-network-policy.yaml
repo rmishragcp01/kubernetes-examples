@@ -1,0 +1,26 @@
+#This is a sample yaml. This assumes that you have pods created in your cluster and having lables
+#used below while defining the policy. By default a kubernetes cluster is "allow all" when it comes
+#to pod communication, network policies help enforcing finer grained control over pod communication
+#therefore specifying which pods are allowed to talk to which pods. In the example below we are defining
+#an Ingress policy for pods with lables defined in the podSelector under the spec which says that Ingress
+#is allowed from only a set of pod which carry a label of api-server and Ingress is allowed only on port
+#3306 over TCP protocol.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-ingress-db-api
+spec:
+  podSelector:
+    matchLabels:
+      role: db
+      env: dev
+  policyTypes:
+  -  Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          name: api-server
+    ports:
+      protocol: TCP
+      port: 3306

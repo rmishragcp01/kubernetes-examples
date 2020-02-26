@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pod-volume-01
+spec:
+  #read more on accessModes in documentation
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 1Gi
+  #assume ASW block level storage
+  awsElasticBlockStore:
+    volumeID: <id of the storage>
+    fsType: ext4

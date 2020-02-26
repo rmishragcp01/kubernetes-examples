@@ -1,0 +1,16 @@
+#PersistentVolumeClaim are the objects used by pods to utilize the persistent storage created by the admins using PersistentVolume objects.
+#Kubernetes tries to find a suitable volume based upon the attribute attached to the claims such as access mode, storage etc. Remember that
+#claims to volumes is always a one to one mapping. When a claim is deleted by Kubernetes, we can control what happens to the volume through
+#retention policies. By default the volume will be retained but can also be set to Delete or Recycle (refresh the content before attaching to new claim).
+apiVersion: v1
+kind: PersistenceVolumeClaim
+metadata:
+  name: democlaim
+  labels:
+    type: block-storage
+spec:
+  accessMode:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi

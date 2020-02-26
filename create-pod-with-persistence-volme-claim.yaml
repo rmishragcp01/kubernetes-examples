@@ -1,0 +1,16 @@
+#You must ensure that a PVC has been created.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-volume
+spec:
+  containers:
+    - name: nginx-web
+      image: nginx:latest
+      volumeMounts:
+      - mountPath: "/var/www/html"
+        name: poc-storage-pods-volume
+  volumes:
+    - name: poc-storage-pods-volume
+      persistentVolumeClaim:
+        claimName: democlaim
