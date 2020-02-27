@@ -1,0 +1,13 @@
+#Setting cluster IP as none basically makes it a headless service, it creates a DNS name and an A-Record for each associated pod
+#without having any direct dependencies on Pod IPs so while Pod can come and go, the DNS name remains and application can consistently
+#use these DNS names.
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-headless
+spec:
+  ports:
+    - port: 3306
+  selector:
+    application: mysqldb
+  clusterIP: none

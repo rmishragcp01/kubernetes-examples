@@ -1,0 +1,30 @@
+#Assume that the headless service is there. If not please refer to the create-headless-service-for-statefulsets.yaml.
+#Headless service will be instrumental in provisioning a local DNS name for each type of pod in a unique way.
+#These DNS names will lead to creation of A-Record whihch other simple applications to use it.
+#With stateful sets you do not have to specify subdomain or hostname, just the serviceName with name of shared service is suffice.
+#With stateful set, pods are managed sequentially by default and that each pod gets a unique cordinal index number and shall always
+#retain them. This helps with sequential scheduling of the pod.
+apiVersion: v1
+kind: StatefulSet
+metadata:
+  name: mysql-db-set
+  labels:
+    type: database
+    tier: 1
+    env: production
+spec:
+  template:
+    metadata:
+      name: mysqldb-pod
+      labels:
+        application: mysqldb
+      spec:
+        containers:
+          - name: mysql-container
+            image: mysql:latest
+  replicas: 3
+  selector:
+    matchLabels:
+      application: mysqldb
+  serviceName: mysql-headless
+  podManagementPolicy: Parallel

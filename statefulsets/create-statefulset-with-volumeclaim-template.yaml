@@ -1,0 +1,36 @@
+#This example will dynamically provision 2 pvc's for two pods and therefore two persistent volumes will be created dynamically using the template.
+#The volumes will then be mounted on the container that is running inside the pod. You can run this example in Google Kubernetes Engine from cloud shell.
+#There's another way of mentioning just the pvc and have the pvc use storage classes which can provision volumes in an abstract way also complying to the
+#underlying persistence provider.
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: web
+spec:
+  serviceName: "nginx"
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: k8s.gcr.io/nginx-slim:0.8
+        ports:
+        - containerPort: 80
+          name: web
+        volumeMounts:
+        - name: www
+          mountPath: /usr/share/nginx/html
+  volumeClaimTemplates:
+  - metadata:
+      name: www
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi
