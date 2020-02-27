@@ -9,7 +9,7 @@
 #be evicted fro the node.
 #Get taints on node kubectl describe node <node-name>
 #If you want to un-taint the master and start scheduling pods on it
-#run kubectl taint nodes master node-role.kubernetes.io/master:NoSchedule-
+#run kubectl taint nodes master node-role.kubernetes.io/master:NoSchedule
 apiVersion: v1
 kind: Pod
 metadata:

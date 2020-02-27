@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistenceVolumeClaim
+metadata:
+  name: democlaim-with-sc
+  labels:
+    type: block-storage
+spec:
+  accessMode:
+    - ReadWriteOnce
+  storageClassName: google-pd-storage-class
+  resources:
+    requests:
+      storage: 500Mi

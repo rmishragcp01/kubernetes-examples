@@ -1,0 +1,13 @@
+#Storage Class abstract away the need of creating a PV which can be attached to a claim.
+#Kubernetes can use Storage Class to create PVs using the underlying provisioner like Google, AWS or Azure to spin off a persistent volume.
+#PVC then only needs to refer to the Storage Class only as Storage Class takes care of using the provider's option to create volumes.
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: google-pd-storage-class
+provisioner: kubernetes.io/gce-pd
+parameters:
+  #e.g. could be pd-ssd
+  type: pd-standard
+  #this could be regional if looking for a regionally replicated disk.
+  replication-type: none
