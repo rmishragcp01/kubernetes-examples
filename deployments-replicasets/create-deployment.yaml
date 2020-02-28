@@ -1,0 +1,37 @@
+#kubectl create -f deployment-create.yaml
+#kubectl get deployments -n <namespace if applicable>
+#kubectl apply -f deployment-update.yaml, prefer this while updating the deployment, default update is a rolling update.
+#kubectl set image deployment/my-deployment nginx=ngnix:9.1, my-deployment is the deployment name and nginx is the pod whose container will run with nginx:9.1
+#kubectl rollout status deployment/my-deployment
+#kubectl rollout history deployment/my-deployment
+#kubectl rollout undo deployment/my-deployment (this will go back to previous versions)
+#Remember this is all considering the default name space, if you have created these objects in a certain namespace use -n <namespace> flag with commands.
+#kubectl set image deployment nginx nginx=nginx:1.17 --record is another handy command to record the command which caused deployment to change it will be
+#availabe as change cause with the revision.
+#In line edits kubectl edit deployments. nginx --record, Kubernetes will open up an editor you can make changes and save, it's also recording the edit.
+#kubectl rollout undo deployment nginx is general command to rollback to previous version.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: webserver
+    tier: front-end
+    type: web
+spec:
+  template:
+    metadata:
+      name: nginx-pod
+      labels:
+        app: webserver
+        tier: front-end
+        type: web
+    spec:
+      containers:
+        - name: nginx-container
+          image: nginx:latest
+  replicas: 5
+  selector:
+    matchLabels:
+      tier: front-end
+      type: web

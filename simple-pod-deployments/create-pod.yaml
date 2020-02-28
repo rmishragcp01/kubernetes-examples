@@ -1,0 +1,16 @@
+#required
+apiVersion: v1
+#required
+kind: Pod
+#required
+metadata:
+  name: sample-nginx-pod
+  labels:
+    app: demo-web-app
+    type: front-end-web-server
+#required
+spec:
+  #containers is a list with name being it's first element, if we add another container, will be another -name.(should I say containers expect list of objects).
+  containers:
+    - name: nginx
+      image: nginx
