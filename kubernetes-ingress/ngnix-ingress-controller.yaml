@@ -1,4 +1,4 @@
-#not-tested
+#tested on GKE
 #A custom configmap to pass in any controller configuration
 apiVersion: v1
 kind: ConfigMap
@@ -16,7 +16,7 @@ metadata:
 ---
 
 #Nginx controller configuration starts here. This will be a deployment which will be later exposed as a NodePort service with an external IP.
-apiVersion: extensions/v1betav1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-ingress-controller
@@ -25,14 +25,12 @@ spec:
   selector:
     matchLabels:
       name: nginx-ingress
-      type: ingress-controller
   template:
     metadata:
       name: nginx-ingress
       namespace: dev-01
-      lables:
+      labels:
         name: nginx-ingress
-        type: ingres-controller
     spec:
       containers:
         - name: nginx-ingress-controller
@@ -74,8 +72,4 @@ spec:
       protocol: TCP
       name: https
   selector:
-    matchLabels:
-      name: nginx-ingress
-      type: ingres-controller
-        
-        
+    name: nginx-ingress
