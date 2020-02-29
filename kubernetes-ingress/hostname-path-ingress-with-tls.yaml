@@ -1,0 +1,36 @@
+#not-tested
+#You can secure an Ingress by specifying a Secret that contains a TLS private key and certificate. 
+#Currently the Ingress only supports a single TLS port, 443, and assumes TLS termination. 
+#If the TLS configuration section in an Ingress specifies different hosts, they are multiplexed on the same port 
+#according to the hostname specified through the SNI TLS extension (provided the Ingress controller supports SNI). 
+#The TLS secret must contain keys named tls.crt and tls.key that contain the certificate and private key to use for TLS. For example:
+#Certificate whih is used here should contain the FQDN.
+apiVersion: v1
+kind: Secret
+metadata:
+  name: testsecret-tls
+  namespace: dev-01
+data:
+  tls.crt: <base64 encoded cert>
+  tls.key: base64 encoded private key
+type: kubernetes.io/tls
+
+---
+
+apiVersion: extensions/v1betav1
+kind: Ingress
+metadata:
+  name: tls-ingress-for-test-domain
+spec:
+  tls:
+    - hosts:
+        - someonlinestore.com
+      secretName: testsecret-tls
+  rules:
+    - host: someonlinestore.com
+      http:
+        path: /
+        backend:
+          serviceName: dxl-home-page-service
+          servicePort: 80
+

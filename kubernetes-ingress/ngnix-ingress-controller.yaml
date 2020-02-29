@@ -1,0 +1,81 @@
+#not-tested
+#A custom configmap to pass in any controller configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-configuration
+
+---
+
+#Create the service account to be used by the controller
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: nginx-ingress-controller-svc-account
+
+---
+
+#Nginx controller configuration starts here. This will be a deployment which will be later exposed as a NodePort service with an external IP.
+apiVersion: extensions/v1betav1
+kind: Deployment
+metadata:
+  name: nginx-ingress-controller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: nginx-ingress
+      type: ingress-controller
+  template:
+    metadata:
+      name: nginx-ingress
+      namespace: dev-01
+      lables:
+        name: nginx-ingress
+        type: ingres-controller
+    spec:
+      containers:
+        - name: nginx-ingress-controller
+          image: quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.21.0
+          args:
+            - /nginx-ingress-controller
+            - --configmap=$(POD_NAMESPACE)/nginx-configuration
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          ports:
+           - name: http
+             containerPort: 8080
+           - name: https
+             containerPort: 443
+
+---
+
+#Create Service of type NodePort to expose this deployment.
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-ingress-service
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+      name: http
+    - port: 443
+      targetPort: 443
+      protocol: TCP
+      name: https
+  selector:
+    matchLabels:
+      name: nginx-ingress
+      type: ingres-controller
+        
+        

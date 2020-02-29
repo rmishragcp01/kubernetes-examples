@@ -1,0 +1,12 @@
+#not-tested
+#example of simple ingress object, in this case everything will
+#be routed to LoadBalancer type service demo-ingress-service
+#cleaning up kubectl delete ingress simple-ingress-object
+apiVersion: extensions/v1betav1
+kind: Ingress
+metadata:
+  name: simple-ingress-object
+spec:
+  backend:
+    serviceName: demo-ingress-service
+    servicePort: 8080

@@ -1,0 +1,14 @@
+#not-tested
+#cleaning up kubectl delete ingress host-ingress-object
+apiVersion: extensions/v1betav1
+kind: Ingress
+metadata:
+  name: host-ingress-object
+spec:
+  rules:
+    - host: demo.service.com
+      http:
+        paths:
+          - backend:
+              serviceName: demo-service
+              servicePort: 8080

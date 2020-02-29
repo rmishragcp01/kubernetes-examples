@@ -1,0 +1,20 @@
+#not-tested
+#cleaning up kubectl delete ingress path-ingress-object
+apiVersion: extensions/v1betav1
+kind: Ingress
+metadata:
+  name: path-ingress-object
+spec:
+  rules:
+    - host: demo.service.com
+      http:
+        paths:
+          - path: "/" 
+            backend:
+              serviceName: demo-service
+              servicePort: 8080
+          - path: "/search"
+            backend:
+              serviceName: search-service
+              servicePort: 8080
+        
